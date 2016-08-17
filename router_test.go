@@ -10,7 +10,7 @@ import (
 )
 
 type HelloRequest struct {
-	Msg string `json:"msg"`
+	Name string `json:"name"`
 }
 
 type HelloResponse struct {
@@ -18,7 +18,7 @@ type HelloResponse struct {
 }
 
 func Hello(conn *Connection, data *HelloRequest) {
-	conn.Emit("hello", &HelloResponse{Msg: "hello " + data.Msg})
+	conn.Emit("hello", &HelloResponse{Msg: "hello " + data.Name})
 }
 
 func TestRouter_Handler(t *testing.T) {
@@ -42,7 +42,7 @@ func TestRouter_Handler(t *testing.T) {
 	}
 	defer conn.Close()
 
-	err = conn.WriteMessage(websocket.TextMessage, []byte("hello {\"msg\":\"my message\"}"))
+	err = conn.WriteMessage(websocket.TextMessage, []byte(`hello {"name":"goldman"}`))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,7 +54,7 @@ func TestRouter_Handler(t *testing.T) {
 	if messageType != websocket.TextMessage {
 		t.Error("invalid message type")
 	}
-	if string(p) != "hello {\"msg\":\"hello my message\"}" {
+	if string(p) != `hello {"msg":"hello goldman"}` {
 		t.Error(fmt.Sprintf("invalid message: %s", string(p)))
 	}
 }
