@@ -1,7 +1,6 @@
 package golem
 
 import (
-	"fmt"
 	"github.com/gorilla/websocket"
 	"net/http"
 	"net/http/httptest"
@@ -24,8 +23,20 @@ func Hello(conn *Connection, data *HelloRequest) {
 func TestRouter_Handler(t *testing.T) {
 	myrouter := NewRouter()
 	myrouter.On("hello", Hello)
-	ts := httptest.NewServer(http.HandlerFunc(myrouter.Handler()))
+
+	ts, conn := createServerClient(t, myrouter)
 	defer ts.Close()
+	defer conn.Close()
+
+	writeMessage(t, conn, `hello {"name":"goldman"}`)
+	res := readMessage(t, conn)
+	if res != `hello {"msg":"hello goldman"}` {
+		t.Error("invalid message: " + res)
+	}
+}
+
+func createServerClient(t *testing.T, router *Router) (*httptest.Server, *websocket.Conn) {
+	ts := httptest.NewServer(http.HandlerFunc(router.Handler()))
 
 	dialer := websocket.Dialer{
 		Subprotocols:    []string{},
@@ -40,13 +51,18 @@ func TestRouter_Handler(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer conn.Close()
 
-	err = conn.WriteMessage(websocket.TextMessage, []byte(`hello {"name":"goldman"}`))
+	return ts, conn
+}
+
+func writeMessage(t *testing.T, conn *websocket.Conn, message string) {
+	err := conn.WriteMessage(websocket.TextMessage, []byte(message))
 	if err != nil {
 		t.Fatal(err)
 	}
+}
 
+func readMessage(t *testing.T, conn *websocket.Conn) string {
 	messageType, p, err := conn.ReadMessage()
 	if err != nil {
 		t.Fatal(err)
@@ -54,7 +70,5 @@ func TestRouter_Handler(t *testing.T) {
 	if messageType != websocket.TextMessage {
 		t.Error("invalid message type")
 	}
-	if string(p) != `hello {"msg":"hello goldman"}` {
-		t.Error(fmt.Sprintf("invalid message: %s", string(p)))
-	}
+	return string(p)
 }
