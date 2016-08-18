@@ -277,3 +277,5 @@ func (rm *RoomManager) On(eventName string, callback interface{}) {
 		rm.callbackRoomRemoval = callback.(func(string))
 	}
 }
+
+var room_manager = NewRoomManager()

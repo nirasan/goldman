@@ -61,16 +61,19 @@ type Connection struct {
 	extension interface{}
 	//
 	ctx context.Context
+	//
+	room_manager *RoomManager
 }
 
 // Create a new connection using the specified socket and router.
 func newConnection(s *websocket.Conn, r *Router) *Connection {
 	return &Connection{
-		socket:    s,
-		router:    r,
-		send:      make(chan *message, sendChannelSize),
-		extension: nil,
-		ctx:       context.Background(),
+		socket:       s,
+		router:       r,
+		send:         make(chan *message, sendChannelSize),
+		extension:    nil,
+		ctx:          context.Background(),
+		room_manager: room_manager,
 	}
 }
 
@@ -225,4 +228,8 @@ func (conn *Connection) GetContext() context.Context {
 
 func (conn *Connection) SetContext(ctx context.Context) {
 	conn.ctx = ctx
+}
+
+func (conn *Connection) GetRoomManager() *RoomManager {
+	return conn.room_manager
 }
