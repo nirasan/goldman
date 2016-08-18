@@ -1,6 +1,6 @@
 /*
 
-   Copyright 2013 Niklas Voss
+   Copyright 2016 Daijiro Chiba
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -16,17 +16,8 @@
 
 */
 
-// Golem is a lightweight WebSocket-framework.
+// Goldman is a lightweight Websocket-framework forked from trevex/golem.
 // it simplifies interaction with websockets by exposing an event-based system allowing
 // easy prototyping of WebSocket-interaction. To achieve this a simple extendable JSON-based
 // protocol is used by default, but custom protocol or simple protocol extensions are supported.
-//
-// For more general information, visit the wiki:
-// https://github.com/trevex/golem/wiki
-//
-// Examples can be found in the example repository:
-// https://github.com/trevex/golem_examples
-//
-// The client documentation and repository:
-// https://github.com/trevex/golem_client
-package golem
+package goldman

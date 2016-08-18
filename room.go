@@ -16,7 +16,7 @@
 
 */
 
-package golem
+package goldman
 
 const (
 	roomSendChannelSize = 32

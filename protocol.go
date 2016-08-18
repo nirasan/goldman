@@ -16,7 +16,7 @@
 
 */
 
-package golem
+package goldman
 
 import (
 	"encoding/json"
@@ -38,10 +38,10 @@ var (
 )
 
 // Protocol-interface provides the required methods necessary for any
-// protocol, that should be used with golem, to implement.
-// The evented system of golem needs several steps to process incoming data:
+// protocol, that should be used with goldman, to implement.
+// The evented system of goldman needs several steps to process incoming data:
 //  1. Unpack to extract the name of the event that was emitted.
-//  (next golem checks if an event handler exists, if does, the next method is called with the associated structure of the event)
+//  (next goldman checks if an event handler exists, if does, the next method is called with the associated structure of the event)
 //  2. Unmarshal the interstage product from unpack into the desired type.
 // For emitting data the process is reversed, but merged in a single function,
 // because evaluation the desired unmarshaled type is not necessary:
@@ -70,9 +70,9 @@ func SetDefaultProtocol(protocol Protocol) {
 	initialProtocol = protocol
 }
 
-// DefaultJSONProtocol is the initial protocol used by golem. It implements the
+// DefaultJSONProtocol is the initial protocol used by goldman. It implements the
 // Protocol-Interface.
-// (Note: there is an article about this simple protocol in golem's wiki)
+// (Note: there is an article about this simple protocol in goldman's wiki)
 type DefaultJSONProtocol struct{}
 
 // Unpack splits the event name from the incoming message.

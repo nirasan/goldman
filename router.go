@@ -16,7 +16,7 @@
 
 */
 
-package golem
+package goldman
 
 import (
 	"errors"
@@ -144,12 +144,12 @@ func (router *Router) Handler() func(http.ResponseWriter, *http.Request) {
 
 // The On-function adds callbacks by name of the event, that should be handled.
 // For type T the callback would be of type:
-//     func (*golem.Connection, *T)
-// Type T can be any type. By default golem tries to unmarshal json into the
+//     func (*goldman.Connection, *T)
+// Type T can be any type. By default goldman tries to unmarshal json into the
 // specified type. If a custom protocol is used, it will be used instead to process the data.
 // If type T is registered to use a protocol extension, it will be used instead.
 // If type T is interface{} the interstage data of the active protocol will be directly forwarded!
-// (Note: the golem wiki has a whole page about this function)
+// (Note: the goldman wiki has a whole page about this function)
 func (router *Router) On(name string, callback interface{}) {
 
 	callbackValue := reflect.ValueOf(callback)

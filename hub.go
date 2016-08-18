@@ -16,7 +16,7 @@
 
 */
 
-package golem
+package goldman
 
 const (
 	// Broadcast Channel Size
@@ -89,7 +89,7 @@ var hub = Hub{
 	isRunning:   false,
 }
 
-// GetHub retrieves and returns pointer to golem's active hub.
+// GetHub retrieves and returns pointer to goldman's active hub.
 func GetHub() *Hub {
 	return &hub
 }

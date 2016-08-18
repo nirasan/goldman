@@ -16,7 +16,7 @@
 
 */
 
-package golem
+package goldman
 
 import (
 	"github.com/gorilla/websocket"

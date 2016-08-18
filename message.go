@@ -16,7 +16,7 @@
 
 */
 
-package golem
+package goldman
 
 // Message is container for unprepared data and therefore holds the event name and the pointer to the struct holding the data.
 type message struct {

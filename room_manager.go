@@ -16,7 +16,7 @@
 
 */
 
-package golem
+package goldman
 
 const (
 	roomManagerCreateEvent        = "create"
@@ -243,7 +243,7 @@ func (rm *RoomManager) LeaveAll(conn *Connection) {
 	rm.leaveAll <- conn
 }
 
-// Emit a message, that can be fetched using the golem client library. The provided
+// Emit a message, that can be fetched using the goldman client library. The provided
 // data interface will be automatically marshalled according to the active protocol.
 func (rm *RoomManager) Emit(to string, event string, data interface{}) {
 	rm.send <- &roomMsg{
