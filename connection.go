@@ -20,6 +20,7 @@ package goldman
 
 import (
 	"github.com/gorilla/websocket"
+	"golang.org/x/net/context"
 	"reflect"
 	"time"
 )
@@ -58,6 +59,8 @@ type Connection struct {
 	send chan *message
 	//
 	extension interface{}
+	//
+	ctx context.Context
 }
 
 // Create a new connection using the specified socket and router.
@@ -67,6 +70,7 @@ func newConnection(s *websocket.Conn, r *Router) *Connection {
 		router:    r,
 		send:      make(chan *message, sendChannelSize),
 		extension: nil,
+		ctx:       context.Background(),
 	}
 }
 
@@ -213,4 +217,12 @@ func (conn *Connection) writePump(mode int) {
 			}
 		}
 	}
+}
+
+func (conn *Connection) GetContext() context.Context {
+	return conn.ctx
+}
+
+func (conn *Connection) SetContext(ctx context.Context) {
+	conn.ctx = ctx
 }
