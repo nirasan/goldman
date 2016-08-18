@@ -48,6 +48,14 @@ func SetDefaultConnectionExtension(constructor interface{}) {
 	defaultConnectionExtension = reflect.ValueOf(constructor)
 }
 
+type IConnection interface {
+	Emit(string, interface{})
+	Close()
+	GetContext() context.Context
+	SetContext(context.Context)
+	GetRoomManager() *RoomManager
+}
+
 // Connection holds information about the underlying WebSocket-Connection,
 // the associated router and the outgoing data channel.
 type Connection struct {
