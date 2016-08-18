@@ -1,8 +1,9 @@
-package goldman
+package goldman_test
 
 import (
 	"errors"
 	"github.com/gorilla/websocket"
+	"github.com/nirasan/goldman"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -18,12 +19,12 @@ type HelloResponse struct {
 	Msg string `json:"msg"`
 }
 
-func Hello(conn *Connection, data *HelloRequest) {
+func Hello(conn *goldman.Connection, data *HelloRequest) {
 	conn.Emit("hello", &HelloResponse{Msg: "hello " + data.Name})
 }
 
 func TestRouter_Handler(t *testing.T) {
-	router := NewRouter()
+	router := goldman.NewRouter()
 	router.On("hello", Hello)
 
 	ts, conn, err := createServerClient(router)
@@ -60,16 +61,16 @@ type ResponseMinus struct {
 	Num int `json:"num"`
 }
 
-func Plus(conn *Connection, data *RequestPlus) {
+func Plus(conn *goldman.Connection, data *RequestPlus) {
 	conn.Emit("plus", &ResponsePlus{Num: data.Num1 + data.Num2})
 }
 
-func Minus(conn *Connection, data *RequestMinus) {
+func Minus(conn *goldman.Connection, data *RequestMinus) {
 	conn.Emit("minus", &ResponseMinus{Num: data.Num1 - data.Num2})
 }
 
 func TestRouter_On(t *testing.T) {
-	router := NewRouter()
+	router := goldman.NewRouter()
 	router.On("plus", Plus)
 	router.On("minus", Minus)
 
@@ -108,7 +109,7 @@ func TestRouter_On(t *testing.T) {
 	}
 }
 
-func createServerClient(router *Router) (*httptest.Server, *websocket.Conn, error) {
+func createServerClient(router *goldman.Router) (*httptest.Server, *websocket.Conn, error) {
 	ts := httptest.NewServer(http.HandlerFunc(router.Handler()))
 
 	dialer := websocket.Dialer{
@@ -137,7 +138,7 @@ func writeMessage(conn *websocket.Conn, message string) error {
 }
 
 func readMessage(conn *websocket.Conn) (string, error) {
-	conn.SetReadDeadline(time.Now().Add(500000000 * time.Nanosecond))
+	conn.SetReadDeadline(time.Now().Add(1 * time.Second))
 	messageType, p, err := conn.ReadMessage()
 	if err != nil {
 		return "", err
